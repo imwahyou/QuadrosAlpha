@@ -58,7 +58,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="80dp"
         android:gravity="center"
-        android:text="0"
         android:textSize="20dip" />
 	
     <TextView

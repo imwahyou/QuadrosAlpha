@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class PlayActivity extends Activity {
 	
 	private static final String TAG = "PlayActivity";
-	private static int SCORE = 0;
+	private static int SCORE;
 	private TextView mScoreTextView; 
 	
     @Override
@@ -19,6 +19,7 @@ public class PlayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_view);
         
+        SCORE = 0;
         // set textview
         mScoreTextView = (TextView) findViewById(R.id.score);
     }
@@ -67,15 +68,15 @@ public class PlayActivity extends Activity {
     /*      Partial Views      */
     /* ======================= */
     
-    public void newGameAction() {
+    public void newGameAction(View v) {
     	// TODO
     }
     
-    public void retryGameAction() {
+    public void retryGameAction(View v) {
     	// TODO
     }
     
-    public void quitGameAction() {
+    public void quitGameAction(View v) {
     	// TODO
     }
 }

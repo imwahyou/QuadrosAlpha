@@ -40,11 +40,11 @@ public class MenuActivity extends Activity {
     /*      Partial Views      */
     /* ======================= */
 	
-	public void modesAction() {
+	public void modesAction(View v) {
 		// TODO
 	}
 	
-	public void optionsAction() {
+	public void optionsAction(View v) {
 		// TODO
 	}
 	
