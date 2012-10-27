@@ -3,12 +3,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+	<ImageView
+        android:src="@drawable/heart"
+        android:id="@+id/heart1"
+        android:contentDescription="@string/play_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:textSize="20dip" />
+	<ImageView
+        android:src="@drawable/heart"
+        android:id="@+id/heart2"
+        android:contentDescription="@string/play_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/heart1"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="20dip" />
+	<ImageView
+        android:src="@drawable/heart"
+        android:id="@+id/heart3"
+        android:contentDescription="@string/play_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/heart2"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="20dip" />
+	<ImageView
+        android:src="@drawable/heart"
+        android:id="@+id/heart4"
+        android:contentDescription="@string/play_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/heart3"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="20dip" />
+	
     <TextView
+        android:id="@+id/play_view_textViewId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/play_view_title"
         tools:context=".MainActivity" />
+    
+	<Button
+        android:id="@+id/correctAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/play_view_textViewId"
+        android:layout_marginTop="40dp"
+        android:onClick="correctAction"
+        android:text="RIGHT"
+        android:textSize="20dip" />
+	<Button
+        android:id="@+id/incorrectAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@+id/correctAction_button"
+        android:layout_below="@+id/play_view_textViewId"
+        android:layout_marginTop="40dp"
+        android:onClick="incorrectAction"
+        android:text="WRONG"
+        android:textSize="20dip" />
+    
 
 </RelativeLayout>

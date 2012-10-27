@@ -2,14 +2,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
+    
+    <ImageView
+        android:src="@drawable/title_icon"
+        android:id="@+id/title_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="20dip" />
+    
     <TextView
         android:id="@+id/menu_view_textViewId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_below="@+id/title_icon"
+        android:layout_marginTop="80dp"
         android:gravity="center"
         android:text="@string/menu_view_title"
         android:textSize="20dip" />
@@ -19,9 +31,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"
+        android:layout_below="@+id/menu_view_textViewId"
+        android:layout_marginTop="40dp"
         android:onClick="playAction"
-        android:text="PLAY"
-        android:textSize="30dip" />
+        android:text="  PLAY  "
+        android:textSize="20dip" />
+	<Button
+        android:id="@+id/progressAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/playAction_button"
+        android:layout_marginTop="20dp"
+        android:onClick="progressAction"
+        android:text="PROGRESS"
+        android:textSize="20dip" />
+	<Button
+        android:id="@+id/optionsAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/progressAction_button"
+        android:layout_marginTop="20dp"
+        android:onClick="optionsAction"
+        android:text="OPTIONS"
+        android:textSize="20dip" />
+	<Button
+        android:id="@+id/difficultyAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/optionsAction_button"
+        android:layout_marginTop="20dp"
+        android:onClick="modesAction"
+        android:text="MODES"
+        android:textSize="20dip" />
 
 </RelativeLayout>
