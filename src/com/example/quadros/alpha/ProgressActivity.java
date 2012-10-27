@@ -3,6 +3,7 @@ package com.example.quadros.alpha;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 
 public class ProgressActivity extends Activity {
 	
@@ -22,7 +23,7 @@ public class ProgressActivity extends Activity {
     /*      Partial Views      */
     /* ======================= */
     
-    public void clearDataAction() {
+    public void clearDataAction(View v) {
     	// TODO
     }
 

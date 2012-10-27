@@ -4,11 +4,23 @@
     android:layout_height="match_parent" >
 
     <TextView
+        android:id="@+id/progress_view_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="@string/progress_view_title"
         tools:context=".MainActivity" />
+    
+	<Button
+        android:id="@+id/clearDataAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/progress_view_title"
+        android:layout_marginTop="40dp"
+        android:onClick="clearDataAction"
+        android:text="CLEAR DATA"
+        android:textSize="20dip" />
 
 </RelativeLayout>
