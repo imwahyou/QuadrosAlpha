@@ -3,6 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+     <ImageView
+        android:src="@drawable/title_icon"
+        android:id="@+id/title_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="20dip" />
+     
     <TextView
         android:id="@+id/title_view_textViewId"
         android:layout_width="wrap_content"
@@ -14,7 +25,7 @@
         android:text="@string/title_view_title"
         android:textSize="20dip" />
     
-	<Button
+	<!--  <Button
         android:id="@+id/menuAction_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +33,6 @@
         android:layout_marginTop="120dp"
         android:onClick="menuAction"
         android:text="MENU"
-        android:textSize="30dip" />
+        android:textSize="30dip" />-->
 
 </RelativeLayout>

@@ -25,7 +25,6 @@ public final class R {
         public static final int heart3=0x7f070008;
         public static final int heart4=0x7f070009;
         public static final int incorrectAction_button=0x7f07000f;
-        public static final int menuAction_button=0x7f070013;
         public static final int menu_view_textViewId=0x7f070001;
         public static final int one=0x7f07000b;
         public static final int optionsAction_button=0x7f070004;
