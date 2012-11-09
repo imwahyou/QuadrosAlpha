@@ -9,6 +9,67 @@ public class QuadrosGame {
 	private static final int BOARD_LIMIT = 5;
 	private static final int LEVEL_LIMIT = 10;
 	
+	private int score;
+	private int life;
+	private int currentLevel;
+	private int rows;
+	private int cols;
+	private Set<Integer> selectedCells;
+	private boolean[] board;
+	private int boardSize;
+	
+	public QuadrosGame() {
+		//sdfsfd
+		
+		score = 0;
+		life = 4;
+		currentLevel = 0;
+		rows = 3;
+		cols = 3;
+		selectedCells = new HashSet<Integer>();
+		boardSize = rows*cols;
+		board = new boolean[boardSize];
+		generateCells(this.currentLevel);
+	}
+	
+	public void generateCells(int level) {
+		Random rand = new Random();
+		while (this.selectedCells.size() < level+3) {
+			this.selectedCells.add(rand.nextInt(this.rows * this.cols));
+		}
+	}
+	
+	public boolean setMove(int location) {
+		if(location < 0 || location > this.boardSize)
+			throw new IllegalArgumentException("location must be between 0 and board size inclusive: " + location);
+		
+		if(!this.board[location] && selectedCells.contains(location)) {
+			board[location] = true;
+			this.score += 10;
+			
+			return true;
+		} else {
+			this.life--;
+			return false;
+		}
+	}
+	
+	public int getScore(){
+		return this.score;
+	}
+	
+	public int getLife() {
+		return this.life;
+	}
+	
+	public int getCurrentLevel() {
+		return this.currentLevel;
+	}
+	
+	public int getBoardSize() {
+		return this.boardSize;
+	}
+	
 	public static void main(String args[]) {
 		
 		Random rand = new Random();
@@ -40,8 +101,5 @@ public class QuadrosGame {
 		}
 	}
 	
-	public static void displayBoard() {
-		
-	}
 	
 }

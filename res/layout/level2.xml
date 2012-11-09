@@ -60,19 +60,19 @@
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="1"
                 android:textSize="10dp" />
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="2"
                 android:textSize="10dp" />
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="3"
                 android:textSize="10dp" />
 	    </TableRow>
@@ -81,19 +81,19 @@
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="4"
                 android:textSize="10dp" />
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="5"
                 android:textSize="10dp" />
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="6"
                 android:textSize="10dp" />
 	    </TableRow>
@@ -102,20 +102,42 @@
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="7"
                 android:textSize="10dp" />
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="8"
                 android:textSize="10dp" />
             <Button
                 android:id="@+id/one"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:text="9"
+                android:textSize="10dp" />
+	    </TableRow>
+	    
+	    	    
+	   	<TableRow>
+            <Button
+                android:id="@+id/one"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:text="A"
+                android:textSize="10dp" />
+            <Button
+                android:id="@+id/one"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:text="B"
+                android:textSize="10dp" />
+            <Button
+                android:id="@+id/one"
+                android:layout_width="100dp"
+                android:layout_height="80dp"
+                android:text="C"
                 android:textSize="10dp" />
 	    </TableRow>
 	</TableLayout>
