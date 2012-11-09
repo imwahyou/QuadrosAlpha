@@ -7,6 +7,20 @@
     <string name="play_view_title">gameplay screen</string>
     <string name="score">000</string>
     
+    <string name="difficulty_choose">MODE</string>
+    <string name="difficulty_easy">EASY</string>
+    <string name="difficulty_medium">MEDIUM</string>
+    <string name="difficulty_hard">HARD</string>
     
+    <string name="sure">ARE YOU SURE?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
 
+    <string name="options">OPTIONS</string>
+    <string name="music">MUSIC</string>
+    <string name="sfx">SFX</string>
+    
+    <string name="newgame">NEW GAME?</string>
+    <string name="retry">RETRY?</string>
+    <string name="quit">QUIT?</string>
 </resources>
