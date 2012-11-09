@@ -135,10 +135,14 @@ public class MenuActivity extends Activity {
 					
 					//@Override
 					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-						dialog.dismiss();
 						checked[which] = isChecked;
 					}
 				});
+		builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				dialog.dismiss();   // Close dialog   	    
+			}
+		});
 		return builder.create();
 	}
 	

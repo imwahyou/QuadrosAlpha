@@ -23,4 +23,6 @@
     <string name="newgame">NEW GAME?</string>
     <string name="retry">RETRY?</string>
     <string name="quit">QUIT?</string>
+    
+    <string name="close">CLOSE</string>
 </resources>
