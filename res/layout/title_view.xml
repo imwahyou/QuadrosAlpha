@@ -25,14 +25,33 @@
         android:text="@string/title_view_title"
         android:textSize="20dip" />
     
-	<!--  <Button
-        android:id="@+id/menuAction_button"
+    <TextView
+        android:id="@+id/byJerome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_view_textViewId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/byjerome"
+        android:textSize="20dip" />
+    <TextView
+        android:id="@+id/byTiffany"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"
-        android:onClick="menuAction"
-        android:text="MENU"
-        android:textSize="30dip" />-->
+        android:layout_below="@+id/byJerome"
+        android:gravity="center"
+        android:text="@string/bytiffany"
+        android:textSize="20dip" />
+    <TextView
+        android:id="@+id/byViet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/byTiffany"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/byviet"
+        android:textSize="20dip" />
 
 </RelativeLayout>

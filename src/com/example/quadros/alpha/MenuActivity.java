@@ -1,10 +1,14 @@
 package com.example.quadros.alpha;
 
+import java.util.HashMap;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,10 +20,18 @@ public class MenuActivity extends Activity {
 	
 	static final int DIALOG_DIFFICULTY_ID = 0;
 	static final int DIALOG_OPTION_ID = 1;
+	
+	// for all the sounds  we play
+	private SoundPool mSounds;
+	private HashMap<Integer, Integer> mSoundIDMap;
+	//private boolean mSfx = true;
+	//private boolean mMusic = true;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_view);
+		createSoundPool();
     }
 
     @Override
@@ -40,10 +52,6 @@ public class MenuActivity extends Activity {
 			case DIALOG_OPTION_ID:
 				dialog = createOptionDialog(builder);
 				break;
-				/*
-			case DIALOG_CLEAR_SCORES:
-				dialog = createClearScoresDialog(builder);
-				break;*/
 		}
 
 		if(dialog == null)
@@ -52,6 +60,18 @@ public class MenuActivity extends Activity {
 			Log.d("Dialog", "Dialog created: " + id + ", dialog: " + dialog);
 		return dialog;        
 	}
+	
+	/* ======================= */
+	/*      Music & Sound      */
+	/* ======================= */
+	
+	private void createSoundPool() {
+		int[] soundIds = {R.raw.correctbeep, R.raw.incorrectbeef, R.raw.bgmusic};
+		mSoundIDMap = new HashMap<Integer, Integer>();
+		mSounds = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+		for(int id : soundIds) 
+			mSoundIDMap.put(id, mSounds.load(this, id, 1));
+	}
     
     /* ==================== */
     /*      Activities      */
@@ -59,6 +79,8 @@ public class MenuActivity extends Activity {
     
     // button redirects to main gameplay screenDIALOG_QUIT_ID
 	public void playAction(View v) {
+		mSounds.play(mSoundIDMap.get(R.raw.bgmusic), (float)0.1, (float)0.1, 1, 0, 1);
+		
 		Intent intent = new Intent(this, PlayActivity.class);
 		startActivityForResult(intent, 0);
 	}
@@ -105,18 +127,6 @@ public class MenuActivity extends Activity {
 						Toast.LENGTH_SHORT).show();        	    
 			}
 		});
-		/*builder.setSingleChoiceItems(levels, selected, 
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int item) {
-				dialog.dismiss();   // Close dialog
-
-				//mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.values()[item]);
-
-				// Display the selected difficulty level
-				Toast.makeText(getApplicationContext(), "Difficulty changed to: " + levels[item], 
-						Toast.LENGTH_SHORT).show();        	    
-			}
-		});*/
 		return builder.create();
 	}
 	

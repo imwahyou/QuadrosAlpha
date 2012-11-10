@@ -1,8 +1,8 @@
 <resources>
 
     <string name="app_name">Quadros Alpha</string>
-    <string name="title_view_title">&lt;title screen&gt;</string>
-    <string name="menu_view_title">&lt;main menu screen&gt;</string>
+    <string name="title_view_title">QUADROS (alpha)</string>
+    <string name="menu_view_title">QUADROS</string>
     <string name="menu_view_play">play</string><string name="menu_view_progress">progress</string><string name="progress_view_title">&lt;progress screen&gt;</string>
     <string name="play_view_title">gameplay screen</string>
     <string name="score">000</string>
@@ -20,9 +20,14 @@
     <string name="music">MUSIC</string>
     <string name="sfx">SFX</string>
     
-    <string name="newgame">NEW GAME?</string>
+    <string name="newgame">LEVEL COMPLETE!</string>
     <string name="retry">RETRY?</string>
     <string name="quit">QUIT?</string>
     
     <string name="close">CLOSE</string>
+    <string name="next">NEXT LEVEL</string>
+    
+    <string name="byjerome">Jerome Martinez</string>
+    <string name="bytiffany">Tiffany Ko</string>
+    <string name="byviet">QuocViet Le</string>
 </resources>

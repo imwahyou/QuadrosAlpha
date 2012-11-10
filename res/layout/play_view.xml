@@ -132,15 +132,19 @@
         android:gravity="center"
         android:textSize="20dip" />
 	
-    <TextView
-        android:id="@+id/play_view_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"
-        android:text="@string/play_view_title"
-        tools:context=".MainActivity" />
-
+	<Button
+	    android:id="@+id/reset_game_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignRight="@+id/play_grid"
+	    android:layout_marginRight="50dp"
+	    android:layout_marginBottom="30dp"
+	    android:layout_toLeftOf="@+id/quit_game_button"
+	    android:onClick="retryGameAction"
+	    android:text="Reset"
+	    android:textSize="10dp" />
+	
 	<Button
 	    android:id="@+id/quit_game_button"
 	    android:layout_width="wrap_content"
@@ -150,7 +154,7 @@
 	    android:layout_marginBottom="30dp"
 	    android:layout_toRightOf="@+id/play_view_title"
 	    android:onClick="quitGameAction"
-	    android:text="Quit"
+	    android:text=" Quit "
 	    android:textSize="10dp" />
 
 </RelativeLayout>

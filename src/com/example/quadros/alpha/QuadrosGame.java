@@ -18,9 +18,7 @@ public class QuadrosGame {
 	private boolean[] board;
 	private int boardSize;
 	
-	public QuadrosGame() {
-		//sdfsfd
-		
+	public QuadrosGame() {									        
 		score = 0;
 		life = 4;
 		currentLevel = 0;
@@ -35,7 +33,8 @@ public class QuadrosGame {
 	public void generateCells(int level) {
 		Random rand = new Random();
 		while (this.selectedCells.size() < level+3) {
-			this.selectedCells.add(rand.nextInt(this.rows * this.cols));
+			int r = rand.nextInt(this.rows * this.cols);
+			this.selectedCells.add(r);
 		}
 	}
 	
@@ -44,7 +43,7 @@ public class QuadrosGame {
 			throw new IllegalArgumentException("location must be between 0 and board size inclusive: " + location);
 		
 		if(!this.board[location] && selectedCells.contains(location)) {
-			board[location] = true;
+			this.board[location] = true;
 			this.score += 10;
 			
 			return true;
@@ -52,6 +51,14 @@ public class QuadrosGame {
 			this.life--;
 			return false;
 		}
+	}
+	
+	public HashSet<Integer> getSelectedCells() {
+		return (HashSet<Integer>) this.selectedCells;
+	}
+	
+	public boolean getBoardLocation(int i) {
+		return this.board[i];
 	}
 	
 	public int getScore(){
@@ -100,6 +107,4 @@ public class QuadrosGame {
 			}
 		}
 	}
-	
-	
 }
