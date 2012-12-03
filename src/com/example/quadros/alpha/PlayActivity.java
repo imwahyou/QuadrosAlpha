@@ -2,6 +2,7 @@ package com.example.quadros.alpha;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,6 +36,12 @@ public class PlayActivity extends Activity {
 
 	private static final String TAG = "PlayActivity";
 	private TextView mScoreTextView;
+	
+	private int score;
+	private int life;
+	
+	private int tier;
+	private int level;
 
 	private QuadrosGame mGame;
 	//private Button mBoardButtons[];
@@ -51,9 +58,15 @@ public class PlayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.play_view);
 
+		score = 0;
+		life = 4;
+		
+		tier = 1;
+		level = 1;
+		
 		// set textview
 		mScoreTextView = (TextView) findViewById(R.id.score);
-		mGame = new QuadrosGame();
+		mGame = new QuadrosGame(tier, level);
 		mBoardView = (BoardView) findViewById(R.id.board);
 		mBoardView.setGame(mGame);
 		
@@ -133,20 +146,57 @@ public class PlayActivity extends Activity {
 	/* ========================== */
 	/*      Gameplay Actions      */
 	/* ========================== */
+	
+	public void nextLevel() {
+		isGameOver = false;
+		level++;
+		if (level < 4)
+			tier = 2;
+		else if (level < 7)
+			tier = 3;
+		else if (level < 11)
+			tier = 4;
+		else 
+			tier = 5;
+		
+		mGame.level = level;
+		mGame.rows = tier + 2;
+		mGame.cols = tier + 2;
+		mGame.board = new boolean[mGame.rows * mGame.cols];
+		mGame.boardSize = mGame.rows * mGame.cols;
+		mGame.generateCells(level);
+		//this.mGame = new QuadrosGame(tier, level);
+		mBoardView.setBoard(tier + 2);
+		
+		showAnswer();
+		
+		new Handler().postDelayed(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				clearAnswer();			//for (int i = 0; i < mBoardButtons.length; i++) {
+				//mBoardButtons[i].setEnabled(false);		 		   
+			//}
+			}
+		}, 1000*tier-500);
+		displayScore();
+		mBoardView.setOnTouchListener(mTouchListener);
+		mBoardView.invalidate();
+		
+	}
 
 	// button click represents correct user guess
 	public void correctAction(View v) {
 		Log.d(TAG, "in correctAction");
 		mSounds.play(mSoundIDMap.get(R.raw.correctbeep), 1, 1, 1, 0, 1);
+		
+		score += 10;
 		displayScore();
 
 		// concurrency problem (potential)
 		checkAnswer();
 		if (isGameOver) {
-
-			//for (int i = 0; i < mBoardButtons.length; i++) {
-				//mBoardButtons[i].setEnabled(false);		 		   
-			//}
 
 			newGameAction(v);
 		}
@@ -155,21 +205,24 @@ public class PlayActivity extends Activity {
 
 	private void displayScore() {
 		Log.d(TAG, "in displayScore");
-		mScoreTextView.setText(Integer.toString(mGame.getScore()));
+		mScoreTextView.setText(Integer.toString(score));
 	}
 
 	// button click represents incorrect user guess
 	public void incorrectAction(View v) {
 		mSounds.play(mSoundIDMap.get(R.raw.incorrectbeef), 1, 1, 1, 0, 1);
-		if(mGame.getLife() > 0) {
-			mHearts[mGame.getLife()].setVisibility(View.INVISIBLE);
+		life--;
+		
+		if(life > 0) {
+			mHearts[life].setVisibility(View.INVISIBLE);
 		}
 
 		else {
-			mHearts[mGame.getLife()].setVisibility(View.INVISIBLE);
+			mHearts[life].setVisibility(View.INVISIBLE);
 				//for (int i = 0; i < mBoardButtons.length; i++) {
 					//mBoardButtons[i].setEnabled(false);		 		   
-				//}
+				//}private int score;
+				isGameOver = true;
 				showAnswer();
 				retryGameAction(v);
 		}
@@ -228,10 +281,7 @@ public class PlayActivity extends Activity {
 			public void onClick(DialogInterface dialog, int item) {
 				dialog.dismiss();   // Close dialog  
 				//Finish the splash activity so it can't be returned to.
-				PlayActivity.this.finish();
-				// Create an Intent that will start the main activity.
-				Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
-				PlayActivity.this.startActivity(intent);
+				nextLevel();
 			}
 		});
 		return builder.create();
@@ -292,14 +342,15 @@ public class PlayActivity extends Activity {
 	    	int col = (int) event.getX() / mBoardView.getBoardCellWidth();
 	    	int row = (int) event.getY() / mBoardView.getBoardCellHeight();
 	    	int pos = row * mBoardView.getBoardSize() + col;
+
 	    	View view = null;
 			if (!isGameOver) {
 				if(mGame.setMove(pos)) {
-
+					
 					correctAction(view);
 					mBoardView.invalidate();
 				}
-				else {
+				else if (!mGame.getBoardLocation(pos)){
 					incorrectAction(view);
 					mBoardView.invalidate();
 				}
@@ -310,7 +361,5 @@ public class PlayActivity extends Activity {
 	    	return false;
         } 
     };
-
-
 
 }
