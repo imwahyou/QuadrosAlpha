@@ -11,8 +11,9 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class BoardView extends View {
-	// Width of the board grid lines
-	public static final int GRID_LINE_WIDTH = 6;
+
+	static final int GRID_LINE_WIDTH = 6;
+	
 	private Bitmap mNotPressed;
 	private Bitmap mPressed;
 	private Paint mPaint;
@@ -37,8 +38,8 @@ public class BoardView extends View {
 
 
 	public void initialize() {
-//		mNotPressed = BitmapFactory.decodeResource(getResources(), R.drawable.pika_x);
-		mPressed = BitmapFactory.decodeResource(getResources(), R.drawable.meowth_o);
+		mNotPressed = BitmapFactory.decodeResource(getResources(), R.drawable.gray);
+		mPressed = BitmapFactory.decodeResource(getResources(), R.drawable.red);
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	}
 
@@ -72,18 +73,20 @@ public class BoardView extends View {
 		// Determine the width and height of the View
 		int boardWidth = getWidth();
 		int boardHeight = getHeight();
-		// Make thick, light gray lines
-		mPaint.setColor(Color.LTGRAY);
-		mPaint.setStrokeWidth(GRID_LINE_WIDTH);
+		
 		// Draw the vertical and horixontal board lines
 		int cellWidth = getBoardCellWidth();
 		int cellHeight = getBoardCellHeight();
-
-
+		
+		mPaint.setColor(Color.LTGRAY);
+		mPaint.setStrokeWidth(600);
+		canvas.drawRect(0, 0, boardHeight, boardHeight, mPaint);
+		/*
 		for (int i = 0; i <= boardsize; i++){
 			canvas.drawLine(cellWidth * i, 0, cellWidth * i, boardHeight, mPaint);
 			canvas.drawLine(0, cellWidth * i, boardHeight, cellWidth * i, mPaint);
 		}
+		*/
 
 		// Draw all
 		for (int i = 0; i < (boardsize*boardsize); i++) {
@@ -100,12 +103,12 @@ public class BoardView extends View {
 						new Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight), // dest
 						null);
 			}
-/*			else if (mGame != null && !mGame.getBoardLocation(i)) {
+			else if (mGame != null && !mGame.getBoardLocation(i)) {
 				canvas.drawBitmap(mNotPressed,
 						null, // src
 						new Rect(xTopLeft, yTopLeft, xBottomRight, yBottomRight), // dest
 						null);
-			}*/
+			}
 
 		}
 	}

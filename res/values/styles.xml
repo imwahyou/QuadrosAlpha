@@ -1,4 +1,8 @@
 <resources>
-    <style name="AppTheme" parent="android:Theme.Black.NoTitleBar">
+    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar">
     </style>
+    
+     <style name="noAnimTheme" parent="android:Theme.Light.NoTitleBar">
+   		<item name="android:windowAnimationStyle">@null</item>
+	</style>
 </resources>

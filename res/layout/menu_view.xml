@@ -1,18 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
     
     <ImageView
-        android:src="@drawable/title_icon"
+        android:src="@drawable/quadrosicon"
         android:id="@+id/title_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:textSize="20dip" />
+        android:gravity="center" />
     
     <TextView
         android:id="@+id/menu_view_textViewId"
@@ -24,7 +23,7 @@
         android:layout_marginTop="80dp"
         android:gravity="center"
         android:text="@string/menu_view_title"
-        android:textSize="20dip" />
+        android:textSize="50dip" />
     
 	<Button
         android:id="@+id/playAction_button"
@@ -35,36 +34,50 @@
         android:layout_marginTop="40dp"
         android:onClick="playAction"
         android:text="  PLAY  "
-        android:textSize="20dip" />
-	<Button
-        android:id="@+id/progressAction_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/playAction_button"
-        android:layout_marginTop="20dp"
-        android:onClick="progressAction"
-        android:text="PROGRESS"
-        android:textSize="20dip" />
-	<Button
-        android:id="@+id/optionsAction_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/progressAction_button"
-        android:layout_marginTop="20dp"
-        android:onClick="optionsAction"
-        android:text="OPTIONS"
-        android:textSize="20dip" />
+        android:textSize="15dip" />
+	
 	<Button
         android:id="@+id/difficultyAction_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/optionsAction_button"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/playAction_button"
+        android:layout_marginTop="10dp"
         android:onClick="modesAction"
-        android:text="MODES"
-        android:textSize="20dip" />
+        android:text="DIFFICULTY"
+        android:textSize="15dip" />
+	
+	<Button
+        android:id="@+id/progressAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/difficultyAction_button"
+        android:layout_marginTop="10dp"
+        android:onClick="progressAction"
+        android:text="PROGRESS"
+        android:textSize="15dip" />
+	
+	<Button
+        android:id="@+id/optionsAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/howToAction_button"
+        android:layout_marginTop="10dp"
+        android:onClick="optionsAction"
+        android:text="OPTIONS"
+        android:textSize="15dip" />
+	
+	<Button
+        android:id="@+id/howToAction_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/progressAction_button"
+        android:layout_marginTop="10dp"
+        android:onClick="optionsAction"
+        android:text="HOW TO PLAY"
+        android:textSize="15dip" />
 
 </RelativeLayout>
