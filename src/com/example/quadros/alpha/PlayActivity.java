@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -61,6 +62,10 @@ public class PlayActivity extends Activity {
 	private SoundPool mSounds;
 	private MediaPlayer mediaPlayer;
 	private HashMap<Integer, Integer> mSoundIDMap;
+	
+	private SharedPreferences mPrefs;
+	private boolean mMusic;
+	private boolean mSfx;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,11 @@ public class PlayActivity extends Activity {
 		tier = 1;
 		level = 1;
 		
+		// get preferences
+		SharedPreferences mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+		mMusic = mPrefs.getBoolean("mMusic", false);
+		mSfx = mPrefs.getBoolean("mSfx", false);
+		
 		// set textview
 		mScoreTextView = (TextView) findViewById(R.id.score);
 		mGame = new QuadrosGame(tier, level);
@@ -89,8 +99,6 @@ public class PlayActivity extends Activity {
 		mediaPlayer = MediaPlayer.create(this, R.raw.bgmusic);
 		mediaPlayer.setLooping(true);
 		mediaPlayer.setVolume(0.2f, 0.2f);
-		mediaPlayer.start();
-		//createSoundPool();
 
 		mHearts = new ImageView[4];
 		mHearts[0] = (ImageView) findViewById(R.id.heart1);
@@ -133,8 +141,12 @@ public class PlayActivity extends Activity {
 	@Override
 	protected void onResume() {		
 		super.onResume();
+		
 		createSoundPool();
-		mediaPlayer.start();
+		
+		if (mMusic) {
+			mediaPlayer.start();
+		}
 	}
 
 
@@ -235,7 +247,9 @@ public class PlayActivity extends Activity {
 	// button click represents correct user guess
 	public void correctAction(View v) {
 		Log.d(TAG, "in correctAction");
-		mSounds.play(mSoundIDMap.get(R.raw.correctbeep), 1, 1, 1, 0, 1);
+		
+		if (mSfx)
+			mSounds.play(mSoundIDMap.get(R.raw.correctbeep), 1, 1, 1, 0, 1);
 		
 		score += 10;
 		displayScore();
@@ -264,7 +278,10 @@ public class PlayActivity extends Activity {
 
 	// button click represents incorrect user guess
 	public void incorrectAction(View v) {
-		mSounds.play(mSoundIDMap.get(R.raw.incorrectbeef), 1, 1, 1, 0, 1);
+		
+		if (mSfx)
+			mSounds.play(mSoundIDMap.get(R.raw.incorrectbeef), 1, 1, 1, 0, 1);
+		
 		life--;
 		isPerfect = false;
 		

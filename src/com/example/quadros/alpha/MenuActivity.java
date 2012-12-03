@@ -24,13 +24,36 @@ public class MenuActivity extends Activity {
 	
 	private SharedPreferences mPrefs;
 	
-	//private boolean mSfx = true;
-	//private boolean mMusic = true;
+	private boolean mSfx = true;
+	private boolean mMusic = true;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_view);
+        mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        mMusic = mPrefs.getBoolean("mMusic", true);
+		mSfx = mPrefs.getBoolean("mSfx", true);
+    }
+    
+    @Override
+	protected void onPause() {
+    	super.onPause();
+    	
+    	SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putBoolean("mSfx", mSfx);
+        ed.putBoolean("mMusic", mMusic);
+        ed.commit();
+    }
+    
+    @Override
+	protected void onStop() {
+    	super.onStop();
+    	
+    	SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putBoolean("mSfx", mSfx);
+        ed.putBoolean("mMusic", mMusic);
+        ed.commit();
     }
 
     @Override
@@ -123,9 +146,8 @@ public class MenuActivity extends Activity {
 		final CharSequence[] levels = {
 				getResources().getString(R.string.music),
 				getResources().getString(R.string.sfx)};
-		final boolean[] checked = {
-				true,
-				true};
+		
+		final boolean[] checked = {mMusic, mSfx};
 		
 		builder.setMultiChoiceItems(levels, checked, 
 				new DialogInterface.OnMultiChoiceClickListener() {
@@ -133,6 +155,15 @@ public class MenuActivity extends Activity {
 					//@Override
 					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 						checked[which] = isChecked;
+						Log.d("SETTING THE MUSIC AND SOUNDS", which + " : " + isChecked);
+						
+						if (which == 0) {
+							mMusic = isChecked;
+						} else
+							mSfx = isChecked;
+						
+						Log.d("MMUSIC", "" + mMusic);
+						Log.d("MSFX", "" + mSfx);
 					}
 				});
 		builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
