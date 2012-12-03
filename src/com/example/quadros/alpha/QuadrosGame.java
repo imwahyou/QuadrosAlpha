@@ -61,6 +61,10 @@ public class QuadrosGame {
 		return this.board[i];
 	}
 	
+	public void setBoard(int i, boolean value) {
+		this.board[i] = value;
+	}
+	
 	public int getScore(){
 		return this.score;
 	}

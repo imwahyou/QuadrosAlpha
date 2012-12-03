@@ -37,10 +37,10 @@ public class PlayActivity extends Activity {
 	private TextView mScoreTextView;
 
 	private QuadrosGame mGame;
-	private Button mBoardButtons[];
+	//private Button mBoardButtons[];
 	private ImageView mHearts[];
 	private boolean isGameOver;
-	
+	private BoardView mBoardView;
 	// for all the sounds  we play
 	private SoundPool mSounds;
 	private HashMap<Integer, Integer> mSoundIDMap;
@@ -54,20 +54,11 @@ public class PlayActivity extends Activity {
 		// set textview
 		mScoreTextView = (TextView) findViewById(R.id.score);
 		mGame = new QuadrosGame();
-
+		mBoardView = (BoardView) findViewById(R.id.board);
+		mBoardView.setGame(mGame);
+		
 		isGameOver = false;
 		createSoundPool();
-		// hello
-		mBoardButtons = new Button[mGame.getBoardSize()];
-		mBoardButtons[0] = (Button) findViewById(R.id.b0);
-		mBoardButtons[1] = (Button) findViewById(R.id.b1);
-		mBoardButtons[2] = (Button) findViewById(R.id.b2);
-		mBoardButtons[3] = (Button) findViewById(R.id.b3);
-		mBoardButtons[4] = (Button) findViewById(R.id.b4);
-		mBoardButtons[5] = (Button) findViewById(R.id.b5);
-		mBoardButtons[6] = (Button) findViewById(R.id.b6);
-		mBoardButtons[7] = (Button) findViewById(R.id.b7);
-		mBoardButtons[8] = (Button) findViewById(R.id.b8);
 
 		mHearts = new ImageView[4];
 		mHearts[0] = (ImageView) findViewById(R.id.heart1);
@@ -75,13 +66,9 @@ public class PlayActivity extends Activity {
 		mHearts[2] = (ImageView) findViewById(R.id.heart3);
 		mHearts[3] = (ImageView) findViewById(R.id.heart4);
 
-		// Reset all buttons
-		for (int i = 0; i < mBoardButtons.length; i++) {
-			mBoardButtons[i].setText("");
-			mBoardButtons[i].setEnabled(true);
-			mBoardButtons[i].setOnClickListener(new ButtonClickListener(i));    		 		   
-		}
-
+		// Listen for touches on the board
+		mBoardView.setOnTouchListener(mTouchListener);
+		
 		showAnswer();
 		
 		new Handler().postDelayed(new Runnable()
@@ -89,7 +76,9 @@ public class PlayActivity extends Activity {
 			@Override
 			public void run()
 			{
-				clearAnswer();
+				clearAnswer();			//for (int i = 0; i < mBoardButtons.length; i++) {
+				//mBoardButtons[i].setEnabled(false);		 		   
+			//}
 			}
 		}, 1500);
 		displayScore();
@@ -155,9 +144,9 @@ public class PlayActivity extends Activity {
 		checkAnswer();
 		if (isGameOver) {
 
-			for (int i = 0; i < mBoardButtons.length; i++) {
-				mBoardButtons[i].setEnabled(false);		 		   
-			}
+			//for (int i = 0; i < mBoardButtons.length; i++) {
+				//mBoardButtons[i].setEnabled(false);		 		   
+			//}
 
 			newGameAction(v);
 		}
@@ -174,17 +163,13 @@ public class PlayActivity extends Activity {
 		mSounds.play(mSoundIDMap.get(R.raw.incorrectbeef), 1, 1, 1, 0, 1);
 		if(mGame.getLife() > 0) {
 			mHearts[mGame.getLife()].setVisibility(View.INVISIBLE);
-
-			Button test = new Button(this);
-			test.setWidth(100);
-			test.setHeight(100);
 		}
 
 		else {
 			mHearts[mGame.getLife()].setVisibility(View.INVISIBLE);
-				for (int i = 0; i < mBoardButtons.length; i++) {
-					mBoardButtons[i].setEnabled(false);		 		   
-				}
+				//for (int i = 0; i < mBoardButtons.length; i++) {
+					//mBoardButtons[i].setEnabled(false);		 		   
+				//}
 				showAnswer();
 				retryGameAction(v);
 		}
@@ -201,15 +186,18 @@ public class PlayActivity extends Activity {
 
 	public void showAnswer() {
 		for (int s : mGame.getSelectedCells()) {
-			mBoardButtons[s].setBackgroundColor(Color.GREEN);
+			//mBoardButtons[s].setBackgroundColor(Color.GREEN);
+			mGame.setBoard(s, true);
 		}
-		
+		mBoardView.invalidate();	
 	}
 
 	public void clearAnswer() {
 		for (int i = 0; i < mGame.getBoardSize(); i++) {
-			mBoardButtons[i].setBackgroundResource(android.R.drawable.btn_default);
+			//mBoardButtons[i].setBackgroundResource(android.R.drawable.btn_default);
+			mGame.setBoard(i, false);
 		}
+		mBoardView.invalidate();
 	}
 
 	/* ======================= */
@@ -294,52 +282,35 @@ public class PlayActivity extends Activity {
 		});
 		return builder.create();
 	}
+	
+	
+    // Listen for touches on the board
+    private OnTouchListener mTouchListener = new OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
 
-	// on touch listener
-
-	// Listen for touches on the board
-	// Handles clicks on the game board buttons
-	private class ButtonClickListener implements View.OnClickListener {
-		int location;
-
-		public ButtonClickListener(int location) {
-			this.location = location;
-		}
-
-		public void onClick(View view) {
+        	// Determine which cell was touched	    	
+	    	int col = (int) event.getX() / mBoardView.getBoardCellWidth();
+	    	int row = (int) event.getY() / mBoardView.getBoardCellHeight();
+	    	int pos = row * mBoardView.getBoardSize() + col;
+	    	View view = null;
 			if (!isGameOver) {
-				if(mGame.setMove(location)) {
-					mBoardButtons[location].setEnabled(false);
-					mBoardButtons[location].setBackgroundColor(Color.GREEN);
+				if(mGame.setMove(pos)) {
+
 					correctAction(view);
+					mBoardView.invalidate();
 				}
 				else {
 					incorrectAction(view);
+					mBoardView.invalidate();
 				}
-				//if (!mGameOver && mBoardButtons[location].isEnabled()) {
-				//	mGame.setMove(location);
 
-				// If no winner yet, let the computer make a move
-				//int winner = mGame.checkForWinner();
-
-				//}
 			}
-		}
-	}
+	    	
+	    	// So we aren't notified of continued events when finger is moved
+	    	return false;
+        } 
+    };
 
-	//    public void addButton(View v) {
-	//        /* Find Tablelayout defined in main.xml */
-	//        TableLayout tl = (TableLayout)findViewById(R.id.play_grid);
-	//             /* Create a new row to be added. */
-	//             TableRow tr = new TableRow(this);
-	//             tr.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-	//                  /* Create a Button to be the row-content. */
-	//                  Button b = new Button(this);
-	//                  b.setText("Dynamic Button");
-	//                  b.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-	//                  /* Add Button to row. */
-	//                  tr.addView(b);
-	//        /* Add row to TableLayout. */
-	//        tl.addView(tr,new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-	//    }
+
+
 }

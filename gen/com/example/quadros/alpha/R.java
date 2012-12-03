@@ -14,22 +14,16 @@ public final class R {
         public static final int heart=0x7f020000;
         public static final int ic_action_search=0x7f020001;
         public static final int ic_launcher=0x7f020002;
-        public static final int title_icon=0x7f020003;
+        public static final int meowth_o=0x7f020003;
+        public static final int pika_x=0x7f020004;
+        public static final int title_icon=0x7f020005;
     }
     public static final class id {
-        public static final int b0=0x7f08000f;
-        public static final int b1=0x7f080010;
-        public static final int b2=0x7f080011;
-        public static final int b3=0x7f080012;
-        public static final int b4=0x7f080013;
-        public static final int b5=0x7f080014;
-        public static final int b6=0x7f080015;
-        public static final int b7=0x7f080016;
-        public static final int b8=0x7f080017;
-        public static final int byJerome=0x7f08001c;
-        public static final int byTiffany=0x7f08001d;
-        public static final int byViet=0x7f08001e;
-        public static final int clearDataAction_button=0x7f08001a;
+        public static final int board=0x7f080010;
+        public static final int byJerome=0x7f080014;
+        public static final int byTiffany=0x7f080015;
+        public static final int byViet=0x7f080016;
+        public static final int clearDataAction_button=0x7f080012;
         public static final int difficultyAction_button=0x7f08000e;
         public static final int heart1=0x7f080000;
         public static final int heart2=0x7f080001;
@@ -42,12 +36,12 @@ public final class R {
         public static final int play_grid=0x7f080004;
         public static final int play_view_title=0x7f080007;
         public static final int progressAction_button=0x7f08000c;
-        public static final int progress_view_title=0x7f080019;
+        public static final int progress_view_title=0x7f080011;
         public static final int quit_game_button=0x7f080008;
-        public static final int reset_game_button=0x7f080018;
+        public static final int reset_game_button=0x7f08000f;
         public static final int score=0x7f080006;
         public static final int title_icon=0x7f080009;
-        public static final int title_view_textViewId=0x7f08001b;
+        public static final int title_view_textViewId=0x7f080013;
     }
     public static final class layout {
         public static final int level1=0x7f030000;
