@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
 import android.os.Bundle;
@@ -33,15 +34,23 @@ public class PlayActivity extends Activity {
 	static final int DIALOG_RETRY_ID = 1;
 	static final int DIALOG_QUIT_ID = 2;
 	static final int DIALOG_START_ID = 3;
+	
 
 	private static final String TAG = "PlayActivity";
 	private TextView mScoreTextView;
+	
+	private int difficultyLevel;
+	static final int EASY = 0;
+	static final int MEDIUM = 1;
+	static final int HARD = 2;
 	
 	private int score;
 	private int life;
 	
 	private int tier;
 	private int level;
+	
+	private boolean isPerfect;
 
 	private QuadrosGame mGame;
 	//private Button mBoardButtons[];
@@ -50,6 +59,7 @@ public class PlayActivity extends Activity {
 	private BoardView mBoardView;
 	// for all the sounds  we play
 	private SoundPool mSounds;
+	private MediaPlayer mediaPlayer;
 	private HashMap<Integer, Integer> mSoundIDMap;
 
 	@Override
@@ -58,6 +68,9 @@ public class PlayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.play_view);
 
+		isPerfect = true;
+		difficultyLevel = MEDIUM;
+		
 		score = 0;
 		life = 4;
 		
@@ -71,7 +84,13 @@ public class PlayActivity extends Activity {
 		mBoardView.setGame(mGame);
 		
 		isGameOver = false;
-		createSoundPool();
+		
+		// Sounds
+		mediaPlayer = MediaPlayer.create(this, R.raw.bgmusic);
+		mediaPlayer.setLooping(true);
+		mediaPlayer.setVolume(0.2f, 0.2f);
+		mediaPlayer.start();
+		//createSoundPool();
 
 		mHearts = new ImageView[4];
 		mHearts[0] = (ImageView) findViewById(R.id.heart1);
@@ -97,6 +116,26 @@ public class PlayActivity extends Activity {
 		displayScore();
 	}
 	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		Log.d(TAG, "in onPause");
+		
+		if(mSounds != null) {
+			mSounds.release();
+			mSounds = null;
+		}
+		
+		mediaPlayer.pause();
+	}
+	
+	@Override
+	protected void onResume() {		
+		super.onResume();
+		createSoundPool();
+		mediaPlayer.start();
+	}
 
 
 	@Override
@@ -134,12 +173,11 @@ public class PlayActivity extends Activity {
 	/* ======================= */
 	
 	private void createSoundPool() {
-		int[] soundIds = {R.raw.correctbeep, R.raw.incorrectbeef, R.raw.bgmusic};
+		int[] soundIds = {R.raw.correctbeep, R.raw.incorrectbeef};
 		mSoundIDMap = new HashMap<Integer, Integer>();
 		mSounds = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
 		for(int id : soundIds) 
 			mSoundIDMap.put(id, mSounds.load(this, id, 1));
-		
 	}
 
 
@@ -148,6 +186,14 @@ public class PlayActivity extends Activity {
 	/* ========================== */
 	
 	public void nextLevel() {
+		
+		if (difficultyLevel == EASY) {
+			life = 4;
+			for (int i = 0; i < 4; i++)
+				mHearts[i].setVisibility(View.VISIBLE);
+		}
+		
+		isPerfect = true;
 		isGameOver = false;
 		level++;
 		if (level < 4)
@@ -197,7 +243,15 @@ public class PlayActivity extends Activity {
 		// concurrency problem (potential)
 		checkAnswer();
 		if (isGameOver) {
-
+			
+			if (difficultyLevel == MEDIUM && isPerfect) {
+				if (life < 4) {
+					life ++;
+					mHearts[life-1].setVisibility(View.VISIBLE);
+					// SOUND FOR REGEN
+				}
+			}
+			
 			newGameAction(v);
 		}
 
@@ -212,6 +266,7 @@ public class PlayActivity extends Activity {
 	public void incorrectAction(View v) {
 		mSounds.play(mSoundIDMap.get(R.raw.incorrectbeef), 1, 1, 1, 0, 1);
 		life--;
+		isPerfect = false;
 		
 		if(life > 0) {
 			mHearts[life].setVisibility(View.INVISIBLE);

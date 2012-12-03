@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -21,9 +22,8 @@ public class MenuActivity extends Activity {
 	static final int DIALOG_DIFFICULTY_ID = 0;
 	static final int DIALOG_OPTION_ID = 1;
 	
-	// for all the sounds  we play
-	private SoundPool mSounds;
-	private HashMap<Integer, Integer> mSoundIDMap;
+	private SharedPreferences mPrefs;
+	
 	//private boolean mSfx = true;
 	//private boolean mMusic = true;
 	
@@ -31,7 +31,6 @@ public class MenuActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_view);
-		createSoundPool();
     }
 
     @Override
@@ -60,18 +59,6 @@ public class MenuActivity extends Activity {
 			Log.d("Dialog", "Dialog created: " + id + ", dialog: " + dialog);
 		return dialog;        
 	}
-	
-	/* ======================= */
-	/*      Music & Sound      */
-	/* ======================= */
-	
-	private void createSoundPool() {
-		int[] soundIds = {R.raw.correctbeep, R.raw.incorrectbeef, R.raw.bgmusic};
-		mSoundIDMap = new HashMap<Integer, Integer>();
-		mSounds = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
-		for(int id : soundIds) 
-			mSoundIDMap.put(id, mSounds.load(this, id, 1));
-	}
     
     /* ==================== */
     /*      Activities      */
@@ -79,7 +66,7 @@ public class MenuActivity extends Activity {
     
     // button redirects to main gameplay screenDIALOG_QUIT_ID
 	public void playAction(View v) {
-		mSounds.play(mSoundIDMap.get(R.raw.bgmusic), (float)0.1, (float)0.1, 1, 0, 1);
+		//mSounds.play(mSoundIDMap.get(R.raw.bgmusic), (float)0.1, (float)0.1, 1, 0, 1);
 		
 		Intent intent = new Intent(this, PlayActivity.class);
 		startActivityForResult(intent, 0);
