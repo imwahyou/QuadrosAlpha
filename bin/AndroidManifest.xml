@@ -40,6 +40,12 @@
 		    android:label="ProgressActivity"
 		    android:theme="@style/noAnimTheme">
 		</activity>
+		
+		<activity 
+		    android:name=".HowToActivity" 
+		    android:label="HowToActivity"
+		    android:theme="@style/noAnimTheme">
+		</activity>
     </application>
 
 </manifest>

@@ -40,7 +40,7 @@ public class PlayActivity extends Activity {
 	private static final String TAG = "PlayActivity";
 	private TextView mScoreTextView;
 	
-	private int difficultyLevel;
+	private int mDifficulty;
 	static final int EASY = 0;
 	static final int MEDIUM = 1;
 	static final int HARD = 2;
@@ -52,6 +52,7 @@ public class PlayActivity extends Activity {
 	private int level;
 	
 	private boolean isPerfect;
+	private int highScore;
 
 	private QuadrosGame mGame;
 	//private Button mBoardButtons[];
@@ -64,6 +65,7 @@ public class PlayActivity extends Activity {
 	private HashMap<Integer, Integer> mSoundIDMap;
 	
 	private SharedPreferences mPrefs;
+	private SharedPreferences mProgress;
 	private boolean mMusic;
 	private boolean mSfx;
 
@@ -73,27 +75,27 @@ public class PlayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.play_view);
 
+		// set initial game state
+		isGameOver = false;
 		isPerfect = true;
-		difficultyLevel = MEDIUM;
 		
 		score = 0;
+		highScore = 0;
 		life = 4;
-		
-		tier = 1;
-		level = 1;
+		tier = level = 1;
 		
 		// get preferences
-		SharedPreferences mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+		mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+		mProgress = getSharedPreferences("progress", MODE_PRIVATE);
 		mMusic = mPrefs.getBoolean("mMusic", false);
 		mSfx = mPrefs.getBoolean("mSfx", false);
 		
+		mDifficulty = mPrefs.getInt("mDifficulty", 0);
 		// set textview
 		mScoreTextView = (TextView) findViewById(R.id.score);
 		mGame = new QuadrosGame(tier, level);
 		mBoardView = (BoardView) findViewById(R.id.board);
 		mBoardView.setGame(mGame);
-		
-		isGameOver = false;
 		
 		// Sounds
 		mediaPlayer = MediaPlayer.create(this, R.raw.bgmusic);
@@ -105,7 +107,7 @@ public class PlayActivity extends Activity {
 		mHearts[1] = (ImageView) findViewById(R.id.heart2);
 		mHearts[2] = (ImageView) findViewById(R.id.heart3);
 		mHearts[3] = (ImageView) findViewById(R.id.heart4);
-
+		
 		// Listen for touches on the board
 		mBoardView.setOnTouchListener(mTouchListener);
 		
@@ -134,6 +136,8 @@ public class PlayActivity extends Activity {
 			mSounds.release();
 			mSounds = null;
 		}
+		
+		// set high score
 		
 		mediaPlayer.pause();
 	}
@@ -199,7 +203,7 @@ public class PlayActivity extends Activity {
 	
 	public void nextLevel() {
 		
-		if (difficultyLevel == EASY) {
+		if (mDifficulty == EASY) {
 			life = 4;
 			for (int i = 0; i < 4; i++)
 				mHearts[i].setVisibility(View.VISIBLE);
@@ -258,7 +262,7 @@ public class PlayActivity extends Activity {
 		checkAnswer();
 		if (isGameOver) {
 			
-			if (difficultyLevel == MEDIUM && isPerfect) {
+			if (mDifficulty == MEDIUM && isPerfect) {
 				if (life < 4) {
 					life ++;
 					mHearts[life-1].setVisibility(View.VISIBLE);
@@ -295,6 +299,15 @@ public class PlayActivity extends Activity {
 					//mBoardButtons[i].setEnabled(false);		 		   
 				//}private int score;
 				isGameOver = true;
+				highScore = score;
+				
+				int size = mProgress.getInt("size", 0);
+				
+				SharedPreferences.Editor ed = mProgress.edit();
+		        ed.putInt("size", size+1);
+		        ed.putInt("data_"+size, highScore);
+		        ed.commit();
+				
 				showAnswer();
 				retryGameAction(v);
 		}

@@ -1,9 +1,12 @@
 package com.example.quadros.alpha;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,11 +16,28 @@ import android.widget.Toast;
 public class ProgressActivity extends Activity {
 	
 	static final int DIALOG_CLEAR_ID = 0;
+	private SharedPreferences mProgress;
+	private SharedPreferences.Editor mProgressEd;
+	private ArrayList<Integer> dataArray;
+	private int size;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.progress_view);
+        
+        mProgress = getSharedPreferences("progress", MODE_PRIVATE);
+        mProgressEd = mProgress.edit();
+        
+        size = mProgress.getInt("size", 0);
+        
+        dataArray = new ArrayList<Integer>();
+        
+        for (int i = 0; i < size; i++) {
+        	int datum = mProgress.getInt("data_"+i, 0);
+        	dataArray.add(datum); // so hack
+        	Log.d("THIS IS DATA_"+i, datum+"");
+        }
     }
 
     @Override
@@ -67,7 +87,11 @@ public class ProgressActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				dialog.dismiss();   // Close dialog
-
+				
+				if (item == 0) {
+					mProgressEd.clear();
+					mProgressEd.commit();
+				}
 				//mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.values()[item]);   	    
 			}
 		});

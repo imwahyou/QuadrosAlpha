@@ -27,6 +27,9 @@ public class MenuActivity extends Activity {
 	private boolean mSfx = true;
 	private boolean mMusic = true;
 	
+	//0 = easy; 1 = medium; 2 = hard;
+	private int mDifficulty = 0;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class MenuActivity extends Activity {
         mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
         mMusic = mPrefs.getBoolean("mMusic", true);
 		mSfx = mPrefs.getBoolean("mSfx", true);
+		mDifficulty = mPrefs.getInt("mDifficulty", 0);
     }
     
     @Override
@@ -43,6 +47,7 @@ public class MenuActivity extends Activity {
     	SharedPreferences.Editor ed = mPrefs.edit();
         ed.putBoolean("mSfx", mSfx);
         ed.putBoolean("mMusic", mMusic);
+        ed.putInt("mDifficulty", mDifficulty);
         ed.commit();
     }
     
@@ -53,6 +58,7 @@ public class MenuActivity extends Activity {
     	SharedPreferences.Editor ed = mPrefs.edit();
         ed.putBoolean("mSfx", mSfx);
         ed.putBoolean("mMusic", mMusic);
+        ed.putInt("mDifficulty", mDifficulty);
         ed.commit();
     }
 
@@ -101,6 +107,13 @@ public class MenuActivity extends Activity {
 		startActivityForResult(intent, 0);
 	}
 
+	// button redirects to progress chart
+	public void howtoAction(View v) {
+		Intent intent = new Intent(this, HowToActivity.class);
+		startActivityForResult(intent, 0);
+	}
+	
+	
     /* ======================= */
     /*      Partial Views      */
     /* ======================= */
@@ -132,9 +145,11 @@ public class MenuActivity extends Activity {
 
 				//mGame.setDifficultyLevel(TicTacToeGame.DifficultyLevel.values()[item]);
 
+				mDifficulty = item;
+				Log.d("mDifficulty is ", ""+mDifficulty);
 				// Display the selected difficulty level
 				Toast.makeText(getApplicationContext(), "Difficulty changed to: " + levels[item], 
-						Toast.LENGTH_SHORT).show();        	    
+						Toast.LENGTH_SHORT).show();   
 			}
 		});
 		return builder.create();
