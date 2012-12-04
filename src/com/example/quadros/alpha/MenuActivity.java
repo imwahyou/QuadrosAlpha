@@ -1,19 +1,16 @@
 package com.example.quadros.alpha;
 
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
-import android.media.SoundPool;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -26,6 +23,9 @@ public class MenuActivity extends Activity {
 	
 	private boolean mSfx = true;
 	private boolean mMusic = true;
+	private boolean[] checked = {mMusic, mSfx};
+	
+	private MediaPlayer mediaPlayer;
 	
 	//0 = easy; 1 = medium; 2 = hard;
 	private int mDifficulty = 0;
@@ -34,16 +34,36 @@ public class MenuActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_view);
+        
+		Log.d("MENU", "in onCreate Menu");
+		
+		mediaPlayer = MediaPlayer.create(this, R.raw.menumusic);
+		mediaPlayer.setLooping(true);
+		mediaPlayer.setVolume(0.2f, 0.2f);
         mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
         mMusic = mPrefs.getBoolean("mMusic", true);
 		mSfx = mPrefs.getBoolean("mSfx", true);
 		mDifficulty = mPrefs.getInt("mDifficulty", 0);
     }
     
+    
     @Override
 	protected void onPause() {
     	super.onPause();
-    	
+		Log.d("MENU", "in onPause Menu");
+    	SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putBoolean("mSfx", mSfx);
+        ed.putBoolean("mMusic", mMusic);
+        ed.putInt("mDifficulty", mDifficulty);
+        ed.commit();
+        
+		mediaPlayer.pause();
+    }
+    
+    @Override
+	protected void onStop() {
+    	super.onStop();
+		Log.d("MENU", "in onStop Menu");
     	SharedPreferences.Editor ed = mPrefs.edit();
         ed.putBoolean("mSfx", mSfx);
         ed.putBoolean("mMusic", mMusic);
@@ -52,15 +72,32 @@ public class MenuActivity extends Activity {
     }
     
     @Override
-	protected void onStop() {
-    	super.onStop();
-    	
-    	SharedPreferences.Editor ed = mPrefs.edit();
-        ed.putBoolean("mSfx", mSfx);
-        ed.putBoolean("mMusic", mMusic);
-        ed.putInt("mDifficulty", mDifficulty);
-        ed.commit();
+	protected void onResume() {
+    	super.onResume();
+		Log.d("MENU", "in onResume Menu");
+        mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        mMusic = mPrefs.getBoolean("mMusic", true);
+		mSfx = mPrefs.getBoolean("mSfx", true);
+		checked[0] = mMusic;
+		checked[1] = mSfx;
+		Log.d("menu mSfx", mSfx+"");
+		Log.d("menu mMusic", mMusic+"");
+		mDifficulty = mPrefs.getInt("mDifficulty", 0);
+		
+		if (mMusic) {
+			mediaPlayer.start();
+		}
     }
+    
+    /*@Override
+	protected void onStart() {
+    	super.onStart();
+		Log.d("MENU", "in onStart Menu");
+        mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        mMusic = mPrefs.getBoolean("mMusic", true);
+		mSfx = mPrefs.getBoolean("mSfx", true);
+		mDifficulty = mPrefs.getInt("mDifficulty", 0);
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,20 +134,57 @@ public class MenuActivity extends Activity {
 	public void playAction(View v) {
 		//mSounds.play(mSoundIDMap.get(R.raw.bgmusic), (float)0.1, (float)0.1, 1, 0, 1);
 		
-		Intent intent = new Intent(this, PlayActivity.class);
-		startActivityForResult(intent, 0);
+		new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // Create an Intent that will start the main activity.
+                Intent intent = new Intent(MenuActivity.this, PlayActivity.class);
+                MenuActivity.this.startActivity(intent);
+                
+                //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                
+            }
+        }, 0);
 	}
 	
 	// button redirects to progress chart
 	public void progressAction(View v) {
-		Intent intent = new Intent(this, ProgressActivity.class);
-		startActivityForResult(intent, 0);
+		new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // Create an Intent that will start the main activity.
+                Intent intent = new Intent(MenuActivity.this, ProgressActivity.class);
+                MenuActivity.this.startActivity(intent);
+                
+                //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                
+            }
+        }, 0);
 	}
 
-	// button redirects to progress chart
+	// button redirects to how to play
 	public void howtoAction(View v) {
-		Intent intent = new Intent(this, HowToActivity.class);
-		startActivityForResult(intent, 0);
+		
+		new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // Create an Intent that will start the main activity.
+                Intent intent = new Intent(MenuActivity.this, HowToActivity.class);
+                MenuActivity.this.startActivity(intent);
+                
+                //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+                
+            }
+        }, 0);
 	}
 	
 	
@@ -162,18 +236,23 @@ public class MenuActivity extends Activity {
 				getResources().getString(R.string.music),
 				getResources().getString(R.string.sfx)};
 		
-		final boolean[] checked = {mMusic, mSfx};
-		
-		builder.setMultiChoiceItems(levels, checked, 
+		checked[0] = mMusic;
+		checked[1] = mSfx;
+ 		builder.setMultiChoiceItems(levels, checked, 
 				new DialogInterface.OnMultiChoiceClickListener() {
 					
 					//@Override
 					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 						checked[which] = isChecked;
 						Log.d("SETTING THE MUSIC AND SOUNDS", which + " : " + isChecked);
-						
+
 						if (which == 0) {
 							mMusic = isChecked;
+							if (mMusic){
+								mediaPlayer.start();
+							}
+							else
+								mediaPlayer.pause();
 						} else
 							mSfx = isChecked;
 						

@@ -29,11 +29,15 @@ public class TitleActivity extends Activity
                 @Override
                 public void run()
                 {
-                    //Finish the splash activity so it can't be returned to.
-                    TitleActivity.this.finish();
                     // Create an Intent that will start the main activity.
                     Intent intent = new Intent(TitleActivity.this, MenuActivity.class);
                     TitleActivity.this.startActivity(intent);
+                    
+                    //Finish the splash activity so it can't be returned to.
+                    TitleActivity.this.finish();
+                    
+                    //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+                    overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 }
             }, SPLASH_DISPLAY_LENGTH);
     }

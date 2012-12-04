@@ -35,7 +35,8 @@ public class PlayActivity extends Activity {
 	static final int DIALOG_RETRY_ID = 1;
 	static final int DIALOG_QUIT_ID = 2;
 	static final int DIALOG_START_ID = 3;
-	
+	static final int DIALOG_OPTION_ID = 4;
+	static final int DIALOG_RESET_ID = 5;
 
 	private static final String TAG = "PlayActivity";
 	private TextView mScoreTextView;
@@ -68,7 +69,7 @@ public class PlayActivity extends Activity {
 	private SharedPreferences mProgress;
 	private boolean mMusic;
 	private boolean mSfx;
-
+	private boolean[] checked = {mMusic, mSfx};
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		Log.d(TAG, "in onCreate");
@@ -122,7 +123,7 @@ public class PlayActivity extends Activity {
 				//mBoardButtons[i].setEnabled(false);		 		   
 			//}
 			}
-		}, 1500);
+		}, 3000);
 		displayScore();
 	}
 	
@@ -132,6 +133,15 @@ public class PlayActivity extends Activity {
 		
 		Log.d(TAG, "in onPause");
 		
+    	SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putBoolean("mSfx", mSfx);
+        ed.putBoolean("mMusic", mMusic);
+        ed.putInt("mDifficulty", mDifficulty);
+        ed.commit();
+        
+		Log.d("play mSfx", mSfx+"");
+		Log.d("play mMusic", mMusic+"");
+
 		if(mSounds != null) {
 			mSounds.release();
 			mSounds = null;
@@ -142,12 +152,28 @@ public class PlayActivity extends Activity {
 		mediaPlayer.pause();
 	}
 	
+    @Override
+	protected void onStop() {
+    	super.onStop();
+    	
+    	SharedPreferences.Editor ed = mPrefs.edit();
+        ed.putBoolean("mSfx", mSfx);
+        ed.putBoolean("mMusic", mMusic);
+        ed.putInt("mDifficulty", mDifficulty);
+        ed.commit();
+    }
+	
 	@Override
 	protected void onResume() {		
 		super.onResume();
-		
+		Log.d(TAG, "in onResume");
 		createSoundPool();
-		
+        mPrefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        mMusic = mPrefs.getBoolean("mMusic", false);
+		mSfx = mPrefs.getBoolean("mSfx", false);
+		mDifficulty = mPrefs.getInt("mDifficulty", 0);
+		checked[0] = mMusic;
+		checked[1] = mSfx;
 		if (mMusic) {
 			mediaPlayer.start();
 		}
@@ -172,8 +198,14 @@ public class PlayActivity extends Activity {
 		case DIALOG_RETRY_ID:
 			dialog = createRetryDialog(builder);
 			break;
+		case DIALOG_RESET_ID:
+			dialog = createResetDialog(builder);
+			break;
 		case DIALOG_QUIT_ID:
 			dialog = createQuitDialog(builder);
+			break;
+		case DIALOG_OPTION_ID:
+			dialog = createOptionDialog(builder);
 			break;
 		}
 
@@ -350,11 +382,29 @@ public class PlayActivity extends Activity {
 	public void retryGameAction(View v) {
 		showDialog(DIALOG_RETRY_ID);
 	}
+	
+	public void resetGameAction(View v) {
+		showDialog(DIALOG_RESET_ID);
+	}
 
 	public void quitGameAction(View v) {
 		showDialog(DIALOG_QUIT_ID);
 	}
+	
+	public void optionsAction(View v) {
+		showDialog(DIALOG_OPTION_ID);
+	}
+	
+    /* ==================== */
+    /*      Activities      */
+    /* ==================== */
 
+	// button redirects to how to play
+	public void howtoAction(View v) {
+		Intent intent = new Intent(this, HowToActivity.class);
+		startActivityForResult(intent, 0);
+	}
+	
 	/* ======================= */
 	/*      Dialog Handlers    */
 	/* ======================= */
@@ -384,17 +434,80 @@ public class PlayActivity extends Activity {
 			public void onClick(DialogInterface dialog, int item) {
 				dialog.dismiss();   // Close dialog	    
 				if (item == 0){
-					//Finish the splash activity so it can't be returned to.
-					PlayActivity.this.finish();
-					// Create an Intent that will start the main activity.
-					Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
-					PlayActivity.this.startActivity(intent);
+					new Handler().postDelayed(new Runnable()
+			        {
+			            @Override
+			            public void run()
+			            {
+			                // Create an Intent that will start the main activity.
+							//Finish the splash activity so it can't be returned to.
+							PlayActivity.this.finish();
+							Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
+							PlayActivity.this.startActivity(intent);
+			                //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+			                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			                
+			            }
+			        }, 0);
+					
+				}
+				if (item == 1){
+					new Handler().postDelayed(new Runnable()
+			        {
+			            @Override
+			            public void run()
+			            {
+			                // Create an Intent that will start the main activity.
+							//Finish the splash activity so it can't be returned to.
+							PlayActivity.this.finish();
+							Intent intent = new Intent(PlayActivity.this, MenuActivity.class);
+							PlayActivity.this.startActivity(intent);
+			                //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+			                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			                
+			            }
+			        }, 0);
+					
 				}
 			}
 		});
 		return builder.create();
 	}
 
+	
+	private Dialog createResetDialog(AlertDialog.Builder builder) {
+		builder.setTitle(R.string.reset);
+
+		final CharSequence[] levels = {
+				getResources().getString(R.string.yes),
+				getResources().getString(R.string.no)};
+
+		//final int selected = mGame.getDifficultyLevel().ordinal();
+		builder.setItems(levels, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				dialog.dismiss();   // Close dialog	    
+				if (item == 0){
+					new Handler().postDelayed(new Runnable()
+			        {
+			            @Override
+			            public void run()
+			            {
+			                // Create an Intent that will start the main activity.
+							//Finish the splash activity so it can't be returned to.
+							PlayActivity.this.finish();
+							Intent intent = new Intent(PlayActivity.this, PlayActivity.class);
+							PlayActivity.this.startActivity(intent);
+			                //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+			                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			                
+			            }
+			        }, 0);
+					
+				}
+			}
+		});
+		return builder.create();
+	}
 	private Dialog createQuitDialog(AlertDialog.Builder builder) {
 		builder.setTitle(R.string.quit);
 
@@ -407,12 +520,62 @@ public class PlayActivity extends Activity {
 			public void onClick(DialogInterface dialog, int item) {
 				dialog.dismiss();   // Close dialog	    
 				if (item == 0){
-					//Finish the splash activity so it can't be returned to.
-					PlayActivity.this.finish();
-					// Create an Intent that will start the main activity.
-					Intent intent = new Intent(PlayActivity.this, MenuActivity.class);
-					PlayActivity.this.startActivity(intent);
+					new Handler().postDelayed(new Runnable()
+			        {
+			            @Override
+			            public void run()
+			            {
+			                // Create an Intent that will start the main activity.
+							//Finish the splash activity so it can't be returned to.
+							PlayActivity.this.finish();
+							Intent intent = new Intent(PlayActivity.this, MenuActivity.class);
+							PlayActivity.this.startActivity(intent);
+			                //Apply splash exit (fade out) and main entry (fade in) animation transitions.
+			                overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+			                
+			            }
+			        }, 0);
+					
 				}
+			}
+		});
+		return builder.create();
+	}
+	
+	private Dialog createOptionDialog(AlertDialog.Builder builder) {
+		builder.setTitle(R.string.options);
+
+		final CharSequence[] levels = {
+				getResources().getString(R.string.music),
+				getResources().getString(R.string.sfx)};
+		
+		checked[0] = mMusic;
+		checked[1] = mSfx;
+		builder.setMultiChoiceItems(levels, checked, 
+				new DialogInterface.OnMultiChoiceClickListener() {
+					
+					//@Override
+					public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+						checked[which] = isChecked;
+						Log.d("SETTING THE MUSIC AND SOUNDS", which + " : " + isChecked);
+						
+						if (which == 0) {
+							mMusic = isChecked;
+							if (mMusic){
+								mediaPlayer.start();
+							}
+							else
+								mediaPlayer.pause();
+						} else
+							mSfx = isChecked;
+						
+						Log.d("MMUSIC", "" + mMusic);
+						Log.d("MSFX", "" + mSfx);
+					}
+				});
+		builder.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				dialog.dismiss();   // Close dialog   	    
 			}
 		});
 		return builder.create();

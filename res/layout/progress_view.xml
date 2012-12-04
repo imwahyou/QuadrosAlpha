@@ -2,25 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <TextView
-        android:id="@+id/progress_view_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/progress_view_title"
-        tools:context=".MainActivity" />
     
-	<Button
-        android:id="@+id/clearDataAction_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/chart"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/progress_view_title"
-        android:layout_marginTop="40dp"
-        android:onClick="clearDataAction"
-        android:text="CLEAR DATA"
-        android:textSize="20dip" />
+        android:orientation="horizontal" />
+
+	<Button
+	    android:id="@+id/clearDataAction_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_centerHorizontal="true"
+	    android:layout_marginBottom="22dp"
+	    android:onClick="clearDataAction"
+	    android:text="CLEAR DATA"
+	    android:textSize="20dip" 
+	    android:background="@drawable/styled_button"/>
 
 </RelativeLayout>
